@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  username     String?  @unique
+}
+
+model SiteSetting {
+  id             String   @id @default(cuid())
+  officeName     String
+  siteTitle      String
+  welcomeText    String
+  whatsappNumber String
+  logoUrl        String?
+  primaryColor   String   @default("#0B1F3A")
+  secondaryColor String   @default("#C8A24A")
+  footerText     String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model DepartureCity {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  isActive     Boolean       @default(true)
+  sortOrder    Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  pricingRules PricingRule[]
+}
+
+model DestinationCity {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  isActive     Boolean       @default(true)
+  sortOrder    Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  pricingRules PricingRule[]
+}
+
+model TransportCompany {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  logoUrl      String?
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  pricingRules PricingRule[]
+}
+
+model VehicleType {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  pricingRules PricingRule[]
+}
+
+model PricingRule {
+  id                 String            @id @default(cuid())
+  tripType           TripType
+  departureCityId    String
+  destinationCityId  String
+  transportCompanyId String?
+  vehicleTypeId      String?
+  pricePerPassenger  Int
+  isActive           Boolean           @default(true)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  departureCity      DepartureCity     @relation(fields: [departureCityId], references: [id])
+  destinationCity    DestinationCity   @relation(fields: [destinationCityId], references: [id])
+  transportCompany   TransportCompany? @relation(fields: [transportCompanyId], references: [id])
+  vehicleType        VehicleType?      @relation(fields: [vehicleTypeId], references: [id])
+
+  @@unique([tripType, departureCityId, destinationCityId, transportCompanyId, vehicleTypeId])
+}
+
+enum Role {
+  ADMIN
+}
+
+enum TripType {
+  GROUP_TRANSPORT
+  PRIVATE_VEHICLE
+}

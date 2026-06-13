@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+:root { --background:#ffffff; --foreground:#0b1f3a; }
+* { box-sizing: border-box; }
+html, body { direction: rtl; overflow-x: hidden; }
+body { background:#f7f8fb; color:var(--foreground); font-family: var(--font-cairo), sans-serif; }
+input, select, textarea, button { font-family: inherit; }
+.container-page { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+.card { @apply rounded-3xl border border-slate-200 bg-white shadow-soft; }
+.label { @apply mb-2 block text-sm font-bold text-slate-700; }
+.input { @apply w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-right text-slate-900 outline-none transition focus:border-gold focus:ring-4 focus:ring-gold/15; }
+.btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-navy px-5 py-3 font-bold text-white transition hover:bg-slate-900 disabled:cursor-not-allowed disabled:bg-slate-300; }
+.btn-gold { @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-gold px-5 py-3 font-bold text-navy transition hover:brightness-95; }
+.btn-light { @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 font-bold text-navy transition hover:bg-slate-50; }
+.table-th { @apply bg-slate-50 px-4 py-3 text-right text-xs font-black text-slate-600; }
+.table-td { @apply border-t border-slate-100 px-4 py-3 text-sm text-slate-700; }

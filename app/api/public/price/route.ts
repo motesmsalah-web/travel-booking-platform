@@ -1,0 +1,4 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/db';
+import { bookingPriceSchema } from '@/lib/validators';
+export async function POST(req:Request){try{const data=bookingPriceSchema.parse(await req.json()); const price=await prisma.pricingRule.findFirst({where:{isActive:true,tripType:data.tripType,departureCityId:data.departureCityId,destinationCityId:data.destinationCityId,transportCompanyId:data.tripType==='GROUP_TRANSPORT'?data.transportCompanyId:null,vehicleTypeId:data.tripType==='PRIVATE_VEHICLE'?data.vehicleTypeId:null}}); if(!price)return NextResponse.json({message:'عذرًا، لا يوجد سعر متاح لهذا المسار حاليًا، يرجى اختيار خيار آخر أو التواصل معنا.'},{status:404}); return NextResponse.json({pricePerPassenger:price.pricePerPassenger});}catch{return NextResponse.json({message:'بيانات السعر غير صحيحة'},{status:400})}}

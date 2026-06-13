@@ -1,0 +1,4 @@
+import { prisma } from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
+export default async function AdminHome(){const [d,ds,c,v,p]=await Promise.all([prisma.departureCity.count(),prisma.destinationCity.count(),prisma.transportCompany.count(),prisma.vehicleType.count(),prisma.pricingRule.count()]); return <div><h1 className="mb-6 text-3xl font-black text-navy">الرئيسية</h1><div className="grid gap-4 md:grid-cols-5">{[['مدن الانطلاق',d],['مدن الوصول',ds],['شركات النقل',c],['أنواع السيارات',v],['الأسعار',p]].map(([t,n])=><div className="card p-6" key={t}><p className="text-slate-500">{t}</p><b className="mt-2 block text-3xl text-navy">{n}</b></div>)}</div><div className="card mt-6 p-6"><h2 className="text-xl font-black text-navy">ملاحظة مهمة</h2><p className="mt-2 leading-8 text-slate-600">هذه نسخة جاهزة للتشغيل محليًا، وبيانات الدخول الافتراضية هي admin@example.com / admin123456. غيّر كلمة المرور ومفتاح AUTH_SECRET قبل الإنتاج.</p></div></div>}
